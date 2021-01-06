@@ -1,0 +1,75 @@
+#include<bits/stdc++.h> /* Created By Tornado2004💚💚 */ using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl; #define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0); #define inF freopen("snowboots.in","r",stdin ); #define outF freopen("snowboots.out" , "w" , stdout ) ; #define sor(v) sort(v.begin() , v.end()); #define print(v) for(auto f : v ) cout << f << " " ; #define rsor(v) sort(v.rbegin() , v.rend()); #define rev(v) reverse(v.begin() , v.end());
+
+#define ll long long
+
+#define int ll #define pii pair<int , int > const int N = 1e5 + 5 , K = 11 ; const ll MOD = 1e9 + 7 , oo = 1e9 , OO = 1e18 ; const double pi = acos(-1) , eps = 1e-6 ;
+
+//37
+
+int di[] = {1 , -1 , 0 , 0}; int dj[] = {0 , 0 , 1 , -1};
+
+int n , B ; int nxt[N] , pre[N];
+
+struct data {
+
+int a , b , c;
+bool operator < (const data & other)const {
+
+    return a < other.a ;
+
+}
+}; int32_t main() { //inF; inF;outF; fastio; // Dont Forget memset
+
+cin >> n >> B ;
+vector<pair<int , int > > v ;
+for(int i = 0 ;i < N ; i ++)nxt[i] = i + 1 , pre[i] = i - 1 ;
+
+for(int i = 0 ; i < n ; i ++){
+    int a ;
+    cin >> a;
+    if(i && i != n - 1)v.push_back({a , i});
+}
+vector<data> boot;
+
+int ans[B];
+
+for(int i = 0 ; i < B ; i ++){
+
+    int a , b ;
+    cin >> a >> b ;
+
+
+    boot.push_back({a , b , i});
+
+
+}
+
+sort(v.rbegin() , v.rend());
+sort(boot.rbegin() , boot.rend());
+
+int idx = 0 ;
+
+int mx = 0 ;
+for(auto f : boot)
+{
+
+    while(idx < v.size() && v[idx].first > f.a){
+        nxt[pre[v[idx].second]] = nxt[v[idx].second];
+        pre[nxt[v[idx].second]] = pre[v[idx].second];
+        mx = max(mx , nxt[v[idx].second] - pre[v[idx ++].second]  );
+
+    }
+
+
+
+    ans[f.c] = (mx > f.b ? 0 : 1);
+
+
+}
+
+for(int i = 0 ;i < B ; i ++)cout << ans[i] << '\n';
+}
