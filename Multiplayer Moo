@@ -1,0 +1,138 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004💚💚
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("multimoo.in","r",stdin );
+#define my freopen("file.txt","r",stdin );
+#define outF freopen("multimoo.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+
+#define ll long long
+
+#define pii pair<int , int >
+const int N = 2e5 + 5  , K = 11  , oo = 1e9;
+
+int n;
+int arr[300][300];
+int cmp[300][300] , cmpid;
+set<int> adj[300000];
+
+
+int di[] = {1 , -1 , 0 , 0};
+int dj[] = {0 , 0 , 1 , -1};
+
+bool valid(int i , int j){
+
+    return i > -1 && j > -1 && i < n && j < n;
+
+}
+int sz[300000] , c[300000];
+int mx1 = 0 ;
+
+void dfs(int i , int j){
+    cmp[i][j] = cmpid ;
+    c[cmpid] = arr[i][j];
+
+    sz[cmpid]++;
+    mx1 = max(mx1 , sz[cmpid]);
+
+    for(int k = 0 ; k < 4 ; k ++){
+        int ni = i + di[k] ;
+        int nj = j + dj[k];
+
+        if(valid(ni , nj) && cmp[ni][nj] == 0){
+            if(arr[i][j] == arr[ni][nj])dfs(ni , nj);
+
+        }
+    }
+
+}
+
+int   mx2 ;
+int fi , se ;
+int vis[300000] , vid ;
+
+int dfs2(int i){
+    vis[i] = vid ;
+    int ret = sz[i];
+
+
+    for(auto f : adj[i]){
+        if(vis[f] == vid )continue ;
+        if(c[i] == fi && c[f] == se || c[i] == se && c[f] == fi)
+            ret += dfs2(f);
+    }
+
+    return ret ;
+
+}
+
+int32_t main()
+{   //inF;
+   inF;outF;
+
+    fastio;
+    // Dont Forget memset
+
+
+    cin >> n ;
+
+
+    for(int i = 0 ;i < n ; i ++)
+        for(int j = 0 ;j < n ; j ++)
+            cin >> arr[i][j];
+
+    cmpid = 1 ;
+    vid = 1 ;
+
+    for(int i = 0 ;i < n ; i ++)
+        for(int j = 0 ; j < n ; j ++)
+            if(!cmp[i][j])
+                dfs(i , j) , cmpid ++;
+    cout << mx1 ;
+    cout << '\n';
+
+
+    for(int i = 0 ; i < n ; i ++){
+        for(int j = 0 ; j < n ; j ++){
+
+            for(int k = 0 ; k < 4 ; k ++){
+                int ni = i + di[k];
+                int nj = j + dj[k];
+                if(valid(ni , nj) && arr[ni][nj] != arr[i][j])
+                    adj[cmp[i][j]].insert(cmp[ni][nj]);
+
+            }
+
+        }
+    }
+    mx2 = mx1 ;
+
+
+    map<pair<int , int > , int > done ;
+
+    for(int i = 1 ; i < cmpid ; i ++){
+        fi = c[i] ;
+        for(auto f : adj[i]){
+            se = c[f] ;
+            if(done.count({fi , se}) || done.count({se , fi}))continue ;
+            done[{fi , se}] ++ ;
+
+            mx2 = max(mx2 , dfs2(i));
+
+            vid ++ ;
+        }
+
+    }
+
+    cout << mx2 ;
+}
