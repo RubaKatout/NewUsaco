@@ -1,0 +1,85 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004💚💚
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("tttt.in","r",stdin );
+#define outF freopen("tttt.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+
+#define ll long long
+
+#define int ll
+#define pii pair<int , int >
+const int N = 2e5 + 5  , K = 11  , oo = 1e9;
+
+char arr[3][3];
+
+
+int32_t main()
+{   //inF;
+   inF;outF;
+    fastio;
+    // Dont Forget memset
+
+    for(int i = 0 ; i < 3 ; i ++)
+        for(int j = 0 ; j < 3 ; j++)
+            cin >> arr[i][j];
+
+    map<string , int > mp ;
+
+
+    string s = "";
+
+    for(int i = 0 ; i < 3 ; i ++){
+        for(int j = 0 ;j < 3 ; j ++){
+            s += arr[i][j] ;
+
+        }
+
+        mp[s] ++ ;
+        s = "";
+    }
+
+    for(int i = 0 ; i < 3 ; i ++){
+        for(int j = 0 ; j < 3 ; j ++)
+            s += arr[j][i];
+        mp[s] ++;
+        s = "";
+
+    }
+    int a = 0 , b = 0 ;
+    s += arr[0][0] ;
+    s += arr[1][1] ;
+    s += arr[2][2];
+    mp[s] ++ ;
+    s = "" ;
+    s += arr[0][2] ;
+    s += arr[1][1] ;
+    s += arr[2][0];
+    mp[s] ++ ;
+    map<set<char>  , int > done ;
+
+    for(auto f : mp){
+        string s = f.first ;
+        if(done[{s[0] , s[1] , s[2]}])continue ;
+        if(s[0] == s[1] && s[2] == s[0])a ++ ;
+        else if(s[0] == s[1] || s[0] == s[2] || s[2] == s[1]){
+                b ++ ;
+                set<char > st = {s[0] , s[1] , s[2 ]};
+                done[st]++;
+        }
+    }
+    cout << a << '\n' << b ;
+
+
+
+}
