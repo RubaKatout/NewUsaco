@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004💚💚
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("sort.in","r",stdin );
+#define outF freopen("sort.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+
+#define ll long long
+
+#define int ll
+#define pii pair<int , int >
+const int N = 2e5 + 5  , K = 11  , oo = 1e9;
+vector<int> A ;int ans = 1;
+map<int , deque<int>> adj ;
+
+
+int32_t main()
+{   //inF;
+   inF;outF;
+    fastio;
+    // Dont Forget memset
+
+
+    int n;
+    cin >> n;
+
+
+    A.resize(n);
+
+    for(auto &it : A)cin >> it ;
+
+    vector<int> v(A);
+    sort(v.begin() , v.end());
+
+
+    for(int i = 0 ; i< n ;i ++){
+         adj[v[i]].push_back(i);
+
+    }
+    for(int i = 0 ; i  < n ; i ++){
+        int f = adj[A[i]].front();
+        adj[A[i]].pop_front();
+
+        if(f < i)ans = max(ans , i - f + 1);
+
+
+    }
+
+
+
+
+
+    cout << ans ;
+
+}
