@@ -1,0 +1,78 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("sleepy.in","r",stdin );
+#define outF freopen("sleepy.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+
+#define ll long long
+#define scan(v) for(auto &it : v)cin >> it ;
+
+#define int ll
+#define pii pair<int , int >
+const int N = 55  , K = 11 ;
+const ll MOD = 1e9 + 7 , oo = 1e9 , OO = 1e18 ;
+const double pi = acos(-1) , eps = 1e-6 ;
+
+//37
+
+
+int di[] = {1 , -1 , 0 , 0};
+int dj[] = {0 , 0 , 1 , -1};
+
+
+
+
+int32_t main()
+{   //inF;
+     inF;outF;
+     fastio;
+     // Dont Forget memset
+    int n;
+    cin >> n ;
+
+    vector<int> v(n);
+
+    for(auto &it : v)
+        cin >> it ;
+
+    int past = oo , cnt = 0 ;
+    deque<int> d ;
+
+    for(int i = n - 1 ; ~i ; i -- ){
+        if(v[i] < past){
+            past = v[i];
+            cnt ++ ;
+            d.push_front(past);
+
+        }
+        else break;
+    }
+
+
+    cout << n - cnt << '\n';
+    cnt = n - cnt ;
+
+    cnt -- ;
+
+    for(int i = 0 ; ~cnt ; i++){
+            if(i)cout << ' ';
+        auto it = lower_bound(d.begin() , d.end() , v[i]) - d.begin();
+        cout << cnt + it ;
+        d.insert(d.begin() + it , v[i]);
+
+        cnt -- ;
+
+    }
+
+}
