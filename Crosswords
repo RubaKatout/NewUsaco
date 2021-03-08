@@ -1,0 +1,90 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004💚💚
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("crosswords.in","r",stdin );
+#define outF freopen("crosswords.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+#define logar(x , y) log(x) / log(y)
+#define int ll
+#define pii pair<int , int >
+const int N = 2e5 + 5  , K = 11 ;
+const ll MOD = 998244353   , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-6 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// ريتني اعدم المود
+int di[] = {1 , -1 , 0 , 0};
+int dj[] = {0 , 0 , 1 , -1};
+ char arr[100][100];
+ int n,  m ;
+
+bool validh(int i , int j){
+    if(i - 1 == -1 || (arr[i - 1][j] == '#')){
+        if(i + 2 < n && arr[i + 1][j] == '.' && arr[i + 2][j] == '.')
+            return true ;
+
+
+    }
+
+    return false ;
+
+
+}
+
+bool valid2 (int i , int j){
+    if(j - 1 == -1 || (arr[i][j - 1 ] == '#')){
+        if(j + 2 < m && arr[i][j + 1] == '.' && arr[i][j + 2] == '.')
+            return true ;
+
+
+    }
+
+    return false ;
+
+}
+
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+
+
+    cin >> n >> m;
+
+
+
+    for(int i = 0 ; i < n ; i ++)
+        for(int j = 0 ; j < m ; j ++)
+            cin >> arr[i][j];
+
+    vector<pair<int , int > > ans ;
+
+
+    for(int i = 0 ; i < n ; i ++){
+        for(int j = 0 ; j < m ; j ++){
+            if(arr[i][j] == '#')continue ;
+            if(validh(i , j) || valid2(i , j))
+            ans.push_back({i + 1 , j + 1});
+        }
+    }
+
+    cout << ans.size() << '\n';
+
+    for(auto f : ans)cout << f.first << " " << f.second << '\n';
+
+
+}
