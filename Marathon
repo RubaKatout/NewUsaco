@@ -1,0 +1,71 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004💚💚
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("marathon.in","r",stdin );
+#define outF freopen("marathon.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+#define logar(x , y) log(x) / log(y)
+#define int ll
+#define pii pair<int , int >
+const int N = 2e5 + 5  , K = 11 ;
+const ll MOD = 998244353   , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-6 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// ريتني اعدم المود
+int di[] = {1 , -1 , 0 , 0};
+int dj[] = {0 , 0 , 1 , -1};
+
+int arr[1003][1003];
+
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+    int n ;
+    cin >> n ;
+
+    vector<pair<int , int > > d ;
+
+    int p , p2 ;
+    cin >> p >> p2 ;
+    int sum = 0 ;
+    vector<pair<int , int > > points ;
+    points.push_back({p , p2});
+
+    while(--n){
+        int a , b ;
+        cin >> a >> b ;
+        points.push_back({a , b});
+
+        d.push_back({abs(a - p) , abs(b - p2)} );
+        p = a , p2 = b ;
+        sum += d.back().first + d.back().second ;
+
+        // +_+
+    }
+
+    int mn = oo ;
+    n = points.size() ;
+    for(int i = 1 ; i + 1 < n ; i ++){
+        mn = min(mn , sum - d[i].first - d[i].second - d[i - 1].first - d[i - 1].second + abs(points[i - 1].first - points[i + 1].first) + abs(points[i - 1].second - points[i + 1].second));
+
+    }
+    cout << mn ;
+
+
+}
