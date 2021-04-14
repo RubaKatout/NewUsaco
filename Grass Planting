@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("planting.in","r",stdin );
+#define outF freopen("planting.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+#define logar(x , y) log(x) / log(y)
+#define int ll
+#define pii pair<int , int >
+const int N = 1e5 + 3 , K = 11 , M = N * 4 ;
+const ll MOD = 998244353  , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+
+int di[] = {0 , 0 , 1 , -1};
+int dj[] = {1 , -1 , 0 , 0};
+
+
+int32_t main()
+{  // inF;
+    inF;outF;
+
+    fastio;
+    int n ;
+    cin >> n ;
+
+    int degree[N] = {} ;
+    int mx = 0 ;
+
+    for(int i = 1 ; i < n ; i ++){
+        int a , b;
+        cin >> a >> b ;
+        degree[a] ++ ;
+        degree[b] ++ ;
+        mx = max({mx , degree[a] , degree[b]});
+    }
+
+
+    cout << mx + 1 ;
+}
