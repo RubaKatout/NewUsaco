@@ -1,0 +1,90 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("closing.in","r",stdin );
+#define outF freopen("closing.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+#define logar(x , y) log(x) / log(y)
+#define int ll
+#define pii pair<int , int >
+const int N = 1e5 + 3 , K = 11 , M = N * 4 ;
+const ll MOD = 998244353  , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+
+int di[] = {0 , 0 , 1 , -1};
+int dj[] = {1 , -1 , 0 , 0};
+
+vector<int> adj[N];
+
+int vis[N] , vid ;
+int cnt ;
+int closed[N];
+
+void dfs(int u){
+
+    vis[u] = vid ;
+    cnt ++ ;
+
+    for(auto f : adj[u]){
+        if(closed[f] || vis[f] == vid)continue ;
+
+        dfs(f);
+    }
+}
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+    int n , m ;
+    cin >> n >> m;
+
+
+    while(m --){
+        int a , b ;
+        cin >> a >>b ;
+
+
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+
+    }
+
+    set<int> st ;
+    for(int i = 1 ; i <= n ; i ++)st.insert(i);
+
+    cout << "YES\n";
+    while(n--){
+        int a ;
+        cin >> a;
+
+        if(n <= 0)break;
+
+        closed[a] ++;
+        vid ++ ;
+
+        st.erase(a);
+        cnt = 0 ;
+
+        dfs(*st.begin());
+
+        if(cnt == n)cout << "YES\n";
+        else cout << "NO\n";
+    }
+
+}
