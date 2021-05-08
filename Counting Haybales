@@ -1,0 +1,99 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("haybales.in","r",stdin );
+#define outF freopen("haybales.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+//#define int ll
+#define logar(x , y) log(x) / log(y)
+
+#define pii pair<int , int >
+const int N = 2e5 + 3 , K = 11 , M = N * 4 ;
+const ll MOD =  11  , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// m is prime --> (a ^ m) % m = a % m
+
+int di[] = {0 , 0 , 1 , -1};
+int dj[] = {1 , -1 , 0 , 0};
+
+int arr[N];
+int n , k ;
+
+int  bs(int a){
+    int l , r , md ;
+    l = 0 , r = n - 1 ;
+    int ans = oo ;
+
+
+    while(l <= r){
+
+        md = (l + r) / 2 ;
+
+
+
+        if(arr[md] >= a)ans = md , r = md - 1;
+
+        else l = md + 1 ;
+
+
+    }
+    return ans;
+}
+int bs2(int a){
+
+    int l = 0 , r = n - 1 , md , ans = -1;
+
+
+    while(l <= r){
+
+        md = (l + r) / 2 ;
+
+        if(arr[md] > a)r = md - 1 ;
+        else l = md + 1 , ans = md ;
+
+
+
+    }
+    return ans ;
+
+}
+
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+
+    cin >> n >> k ;
+
+
+
+    for(int i = 0 ;i < n ; i ++)
+        cin >> arr[i];
+
+    sort(arr, arr + n);
+
+    while(k--){
+        int l , r ;
+        cin >> l >> r ;
+
+        int a = bs(l) , a2 = bs2(r);
+
+        cout << max(0 , a2 -a + 1) << "\n" ;
+    }
+}
