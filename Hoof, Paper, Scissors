@@ -1,0 +1,100 @@
+#include<bits/stdc++.h>
+/*
+#savesheikhjarrah
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("hps.in","r",stdin );
+#define outF freopen("hps.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+//#define int ll
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define pii pair<int , int >
+const int N = 1e5 + 3 , K = 11 , M = N * 4 ;
+const ll MOD =  11  , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// m is prime --> (a ^ m) % m = a % m
+
+int di[] = {0 , 0 , 1 , -1};
+int dj[] = {1 , -1 , 0 , 0};
+
+
+int n , k ;
+int arr[N];
+/*
+0 1 --> 0
+0 2 --> 2
+1 2 --> 1
+*/
+bool com(int a , int b){
+    if(a == b)return 0 ;
+    int t = 0 ;
+
+    if(a > b)swap(a , b) , t ++;
+    if(a == 0){
+        if(b == 1)return (t ? 0 : 1) ;
+        else return (t ? 1 : 0) ;
+
+    }
+    return (t ? 0 : 1);
+
+}
+long long dp[N][21][3];
+
+long long calc(int idx , int rest , int typ){
+
+    if(idx == n)return 0 ;
+    if(rest < 0)return -oo ;
+
+    auto &ret = dp[idx][rest][typ];
+    if(~ret)
+        return ret ;
+
+    ret = 0 ;
+
+    ret = calc(idx + 1 , rest , typ) + com(typ , arr[idx]);
+
+    for(int i = 0 ; i < 3 ; i ++){
+        if(typ != i)ret = max(ret , calc(idx + 1 , rest - 1 , i) + com(typ , arr[idx]));
+
+    }
+
+    return ret ;
+
+
+}
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+
+    cin >> n >> k ;
+
+    memset(dp , -1 , sizeof dp);
+    for(int i = 0 ; i < n ; i ++){
+        char c ;
+
+        cin >> c ;
+
+        arr[i] = (c == 'H' ? 0 : c == 'S' ? 1 : 2);
+
+    }
+
+    cout << max({calc(0 , k , 0) , calc(0 , k , 1) , calc(0 , k , 2)    });
+
+
+}
