@@ -1,0 +1,238 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("haybales.in","r",stdin );
+#define outF freopen("haybales.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+#define int ll
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+const int N = 2e5 + 3 , K = 11 , M = N * 4 ;
+const ll MOD =  1e9 + 7  , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// m is prime --> (a ^ m) % m = a % m
+
+int di[] = {0 , 0 , 1 , -1};
+int dj[] = {1 , -1 , 0 , 0};
+
+int arr[N] , n , q ;
+ll sumseg[M] , sumlazy[M] , mnlazy[M] , mnseg[M];
+
+void mnbuild(int p , int s , int e){
+
+    if(s == e){
+        mnseg[p] = arr[s];
+
+        return ;
+
+    }
+
+    int md = (s + e) / 2 ;
+
+
+    mnbuild(p * 2 , s , md);
+    mnbuild(p * 2 + 1 , md + 1 , e);
+
+
+    mnseg[p] = min(mnseg[p * 2] , mnseg[p * 2 + 1 ]);
+
+
+
+}
+
+void sumbuild(int p , int s , int e){
+
+
+    if(s == e){
+        sumseg[p] = arr[s];
+        return ;
+    }
+
+    int md = (s + e) / 2 ;
+
+    sumbuild(p * 2 , s , md);
+    sumbuild(p * 2 + 1 , md + 1 , e);
+
+
+    sumseg[p] = sumseg[p * 2] + sumseg[p * 2 + 1];
+
+
+
+}
+
+void mnpush(int p , int s , int e){
+
+    if(mnlazy[p] == 0 || s == e)return ;
+
+    ll v = mnlazy[p];
+    mnlazy[p] = 0 ;
+
+    int l = p * 2 , r = p * 2 + 1 , md = (s + e) / 2 ;
+    mnseg[l] += v ;
+    mnseg[r] += v ;
+
+    mnlazy[l] += v;
+    mnlazy[r] += v;
+
+
+
+
+}
+void sumpush(int p , int s , int e){
+
+    if(s == e || sumlazy[p] == 0)return ;
+
+    int l = p * 2 , r = p * 2 + 1 , md = (s + e) / 2 ;
+    ll v = sumlazy[p];
+    sumlazy[p] = 0 ;
+
+    sumseg[l] += (md - s + 1) * v ;
+    sumseg[r] += (e - md) * v ;
+
+    sumlazy[l] += v ;
+    sumlazy[r] += v ;
+
+
+
+}
+
+void mnupdate(int p , int s , int e , int l , int r , ll v){
+
+    if(e < l || s > r)return ;
+    if(s >= l && e <= r){
+
+        mnlazy[p] += v ;
+        mnseg[p] += v;
+
+        return ;
+    }
+    mnpush(p , s , e);
+
+    int md = (s + e) / 2;
+    mnupdate(p * 2 , s , md , l , r , v);
+    mnupdate(p * 2 + 1 , md + 1 , e , l , r , v);
+
+    mnseg[p] = min(mnseg[p * 2] , mnseg[p * 2 + 1]);
+
+
+}
+
+
+void sumupdate(int p , int s , int e , int l , int r , ll v){
+
+    if(e < l || s > r)return ;
+
+    if(s >= l && e <= r){
+
+        sumseg[p] += v * (e - s + 1);
+        sumlazy[p] += v ;
+
+        return ;
+
+
+    }
+    sumpush(p , s , e);
+    int md = (s + e) / 2 ;
+
+
+    sumupdate(p * 2 , s , md , l , r , v);
+    sumupdate(p * 2 + 1 , md + 1 , e , l , r , v);
+
+    sumseg[p] = sumseg[p * 2] + sumseg[p * 2 + 1];
+
+
+
+}
+
+ll mnquery(int p , int s , int e , int l , int r){
+
+    if(e < l || s > r)
+        return OO ;
+
+    if(s >= l && e <= r){
+        return mnseg[p];
+    }
+
+    int md = (s + e) / 2 ;
+    mnpush(p , s , e);
+
+
+    return min(mnquery(p * 2 , s , md , l , r) , mnquery(p * 2 + 1 , md + 1 , e , l , r));
+
+}
+
+ll sumquery(int p , int s , int e , int l , int r){
+
+    if(e < l || s > r)
+        return 0 ;
+
+    if(s >= l && e <= r)
+        return sumseg[p];
+
+    int md = (s + e) / 2 ;
+
+    sumpush(p , s , e);
+
+    return sumquery(p * 2 , s , md , l , r) + sumquery(p * 2 + 1 , md + 1 , e , l , r);
+
+
+}
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+
+
+    cin >> n >> q ;
+
+
+    for(int i = 0 ; i < n ; i ++)
+        cin >> arr[i];
+
+
+    mnbuild(1 , 0 , n - 1);
+    sumbuild(1 , 0 , n - 1);
+
+
+
+    while(q--){
+        char t ;
+        cin >> t ;
+
+
+        int l , r , v;
+        cin >> l >> r ;
+        l -- , r -- ;
+        if(t == 'P'){
+            cin >> v ;
+            mnupdate(1 , 0 , n - 1 , l , r , v);
+            sumupdate(1 , 0 , n - 1 , l , r , v);
+
+        }
+        else if(t == 'M'){
+           cout << mnquery(1 , 0 , n - 1 , l , r) << endl ;
+        }
+        else {
+            cout << sumquery(1 , 0 , n - 1 , l , r) << endl;
+
+        }
+    }
+}
