@@ -1,0 +1,114 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("bphoto.in","r",stdin );
+#define outF freopen("bphoto.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+#define int ll
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+const int N = 2e5 + 3 , K = 11 , M = N * 4 ;
+const ll MOD = 998244353 , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// m is prime --> (a ^ m) % m = a % m
+
+int di[] = {0 , 0 , 1 , -1};
+int dj[] = {1 , -1 , 0 , 0};
+
+
+struct BIT{
+
+    vector<int> v;
+    int sz ;
+
+    explicit BIT(int n){
+
+        sz = n ;
+        v.resize(n);
+    }
+
+    void update(int i ){
+
+        for(i ++ ; i <= sz ; i += (i  & -i))
+            v[i - 1] ++;
+
+    }
+
+    ll get(int i){
+        ll ret =0  ;
+
+        for(i ++ ; i  ; i -= (i & -i))
+            ret += v[i - 1];
+
+        return ret ;
+
+    }
+
+    ll query(int l , int r){
+
+        return get(r) - get(l - 1);
+
+    }
+
+
+
+
+};
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+
+
+
+    int n ;
+    cin >> n ;
+
+    vector<pair<int , int > > v(n);
+
+    for(int i = 0 ;i < n; i ++){
+        cin >> v[i].first ;
+        v[i].second = i ;
+
+    }
+
+
+    BIT bit(n);
+
+    sort(v.rbegin() , v.rend());
+
+    int ans = 0 ;
+
+    for(auto f : v){
+        int l = 0 , r = 0 ;
+        int number = f.first , idx = f.second ;
+        if(idx)l = bit.query(0 , idx - 1);
+        if(idx + 1 < n)r = bit.query(idx + 1 , n - 1);
+
+        if(min(l , r) * 2 < max(l , r))ans ++ ;
+
+        bit.update(idx);
+
+    }
+
+    cout << ans ;
+
+}
