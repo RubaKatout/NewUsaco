@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("teamwork.in","r",stdin );
+#define outF freopen("teamwork.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll  long long
+#define int ll
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+const int N = 1e4 + 4 , K = 11 , M = N * 4 ;
+const ll MOD = 1e9 + 7 , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// m is prime --> (a ^ m) % m = a % m
+
+int n , k ;
+int arr[N];
+
+int dp[N][1003];
+int calc(int idx , int kk , int mx){
+   // cout << idx << " " << kk << " " << mx << endl ;
+    if(idx == n)return 0 ;
+    // base
+
+
+    int &ret = dp[idx][kk];
+
+    if(~ret)
+        return ret ;
+
+    int startgroup = idx - (kk - 1);
+
+    if(kk == k || idx + 1 == n)return ret = calc(idx + 1 , 1 , arr[idx + 1]) + kk * mx;
+
+    ret = calc(idx + 1 , kk + 1 , max(mx , arr[idx + 1])) ;
+    ret = max(ret , calc(idx + 1 , 1 , arr[idx + 1]) + kk * mx);
+    //cout << idx << " " << kk << " " << ret << endl ;
+    return ret ;
+
+
+
+}
+
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+
+
+    cin >> n >> k ;
+
+    for(int i = 0 ; i < n ; i ++)
+        cin >> arr[i];
+
+
+    memset(dp , -1 , sizeof dp);
+
+
+    cout << calc(0 , 1 , arr[0]);
+
+
+}
