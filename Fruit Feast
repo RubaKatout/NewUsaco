@@ -1,0 +1,74 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("feast.in","r",stdin );
+#define outF freopen("feast.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll  long long
+#define int ll
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+const int N = 5e6 + 6, K = 11 , M = N * 4 ;
+const ll MOD = 1e9 + 7 , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// m is prime --> (a ^ m) % m = a % m
+
+
+
+int t , a , b ;
+ll dp[N][2];
+
+
+ll calc(int fullness , int watered){
+
+
+    if(fullness > t)return - OO ;
+
+    if(fullness == t)return t ;
+    ll &ret = dp[fullness][watered];
+    if(~ret)
+        return ret ;
+
+    ret = fullness ;
+
+    ret = max(ret , calc(fullness + a , watered));
+
+    ret = max(ret , calc(fullness + b , watered));
+
+    if(!watered)ret = max(ret , calc(fullness / 2 , 1));
+
+
+
+    return ret ;
+
+
+}
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+
+    cin >> t >> a >> b ;
+    memset(dp , -1 , sizeof dp);
+
+    cout << calc(0 , 0);
+
+
+}
