@@ -1,0 +1,89 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("time.in","r",stdin );
+#define outF freopen("time.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll  long long
+#define int ll
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+const int N = 1e3 + 3,  K = 11 , M = N * 4 ;
+const ll MOD = 1e9 + 7 , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-18 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// m is prime --> (a ^ m) % m = a % m
+
+vector<int> adj[N];
+int dp[2][N];
+
+
+int n , m , c ;
+int cst[N];
+
+
+int32_t main()
+{   //inF;
+   inF;outF;
+    fastio;
+
+
+    cin >> n >> m >> c ;
+
+    for(int i = 1 ; i <= n ; i ++)
+        cin >> cst[i];
+
+    memset(dp , -1 , sizeof dp);
+
+    while(m--){
+        int a , b;
+        cin >> a >> b ;
+
+        adj[a].push_back(b);
+        //adj[b].push_back(a);
+
+    }
+
+    dp[0][1] = 0 ;
+    int p = 1 , mxans = 0 ;
+
+    for(int t = 1; t < N ; t ++){
+
+        memset(dp[p] , -1 , sizeof dp[p]);
+        for(int u = 1 ; u <= n ; u ++){
+
+            for(auto f : adj[u])
+                if(~dp[p ^ 1][u])
+                    dp[p][f] = max(dp[p ^ 1][u] + cst[f] ,dp[p][f] );
+
+
+        }
+        mxans = max(mxans , dp[p][1] - c * t * t);
+        p ^= 1 ;
+
+
+    }
+
+    cout << mxans ;
+
+
+
+
+
+}
