@@ -1,0 +1,110 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("closing.in","r",stdin );
+#define outF freopen("closing.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+//#define int ll
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+const int N = 2e5 + 3 ;
+
+
+int done[N] , dsu[N] , sz[N] ;
+vector<int> adj[N ];
+
+int get(int u){
+
+    if(dsu[u] == u)
+        return u ;
+
+
+    return dsu[u] = get(dsu[u]);
+
+
+
+}
+map<int , int > mp ;
+
+
+
+void connect(int u , int v){
+    u = get(u) , v = get(v);
+
+    if(u == v)return ;
+
+
+
+    if(sz[u] > sz[v])
+        swap(u , v);
+
+    sz[v] += sz[u] ;
+    mp.erase(u);
+    dsu[u] = v ;
+
+
+}
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+
+    int n , m ;
+    cin >> n >> m;
+
+
+    while(m--){
+        int a , b ;
+        cin >>a >> b;
+
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+
+    }
+    vector<int> v (n);
+
+
+    for(auto &it : v)
+        cin >> it ;
+
+    reverse(v.begin() , v.end());
+
+    vector<string> ans ;
+
+    for(auto f : v){
+
+        dsu[f] = f , sz[f] = 1 ;
+        mp[f] ++ ;
+        done[f] ++ ;
+        for(auto c : adj[f]){
+
+            if(done[c])connect(c , f);
+
+        }
+       ans.push_back((mp.size() == 1 ? "YES" : "NO"));
+
+
+    }
+
+    for(int i = n - 1 ; i >= 0 ; i --)
+        cout << ans[i] << '\n';
+
+
+
+
+}
