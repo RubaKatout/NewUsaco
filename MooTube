@@ -1,0 +1,149 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("mootube.in","r",stdin );
+#define outF freopen("mootube.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+//#define int ll
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+const int N = 2e5 + 3 , K = 11 , M = N * 4 ;
+const ll MOD = 998244353 , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// m is prime --> (a ^ m) % m = a % m
+
+
+int sz[N] , dsu[N] ;
+
+struct edge{
+    int from , to , cst ;
+
+
+    bool operator < (const edge & o)const {
+        return cst > o.cst ;
+    }
+
+};
+
+
+int get(int u){
+
+    if(u == dsu[u])
+        return dsu[u];
+
+    return dsu[u] = get(dsu[u]);
+
+
+}
+
+void connect(int u , int v){
+    u = get(u) , v = get(v);
+
+
+    if(u == v)
+        return ;
+
+
+
+    if(sz[u] > sz[v])
+        swap(u , v);
+
+
+
+    sz[v] += sz[u];
+
+    dsu[u] = v ;
+
+
+}
+
+vector<edge> edges ;
+
+struct query{
+
+    int k , u , idx ;
+
+
+    bool operator < (const query & o)const {
+
+        return k > o.k ;
+
+    }
+
+};
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+    int n , q ;
+
+    cin >> n >> q ;
+
+
+    for(int i = 0 ; i < n - 1 ; i ++ ){
+
+        int a , b , c ;
+        cin >> a >> b >> c ;
+
+        edges.push_back({a , b , c});
+
+
+    }
+
+
+    sort(edges.begin() , edges.end());
+
+    vector<query > queries ;
+
+
+    int ans[q] ;
+
+    for(int i = 0 ; i < q ; i ++){
+        int k , u ;
+        cin >> k >> u ;
+
+        queries.push_back({k , u , i});
+
+
+
+    }
+
+    sort(queries.begin() , queries.end());
+    for(int i = 1 ; i <= n ; i ++)
+        dsu[i] = i , sz[i] = 1 ;
+    int p = 0 ;
+
+    for(auto f : queries){
+
+        while(p < n - 1 && edges[p].cst >= f.k)
+            connect(edges[p].from , edges[p].to) , p ++ ;
+
+      //  debug(p)
+        ans[f.idx] = sz[get(f.u)] - 1 ;
+
+
+
+
+    }
+
+    for(int i = 0 ; i < q ; i ++)
+        cout << ans[i] << '\n';
+}
