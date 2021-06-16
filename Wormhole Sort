@@ -1,0 +1,155 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("wormsort.in","r",stdin );
+#define outF freopen("wormsort.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+//#define int ll
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+const int N = 2e5 + 3 , K = 11 , M = N * 4 ;
+const ll MOD = 998244353 , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// m is prime --> (a ^ m) % m = a % m
+
+
+int n , m;
+
+vector<pair<int , int > > er ;
+
+int dsu[N] , sz[N];
+struct edge{
+    int from , to , cst ;
+
+
+    bool operator < (const edge & o)const{
+
+        return cst > o.cst ;
+
+    }
+
+
+};
+
+int get(int u){
+    if(u == dsu[u])
+        return u ;
+
+
+    return dsu[u] = get(dsu[u]);
+
+
+}
+
+bool same(int u , int v){
+
+    return get(u) == get(v);
+
+}
+void connect(int u , int v){
+
+    u = get(u) , v = get(v);
+
+    if(u == v)return ;
+
+    if(sz[u] > sz[v])swap(u , v);
+
+
+    sz[v] += sz[u];
+    dsu[u] = v ;
+
+
+
+}
+
+bool ok(){
+    for(auto f : er){
+        if(!same(f.first , f.second))
+            return false ;
+
+    }
+    return true ;
+
+}
+
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+
+    cin >>  n >> m ;
+    int arr[n + 1];
+
+
+
+    for(int i = 1 ; i <= n ; i ++){
+        cin >> arr[i];
+        if(arr[i] != (i))
+            er.push_back({i , arr[i]});
+
+
+
+    }
+
+
+    vector<edge> edges ;
+    int mm = m ;
+
+    while(m--){
+        int a , b,  c ;
+        cin >> a >> b >> c ;
+        edges.push_back({a , b , c});
+
+
+    }
+    m = mm ;
+
+    if(er.empty()){
+        cout << -1 ;
+        return 0 ;
+    }
+
+    sort(edges.begin() , edges.end());
+
+    int l = 1 , r = m , md ;
+
+    while(l < r){
+
+        md = (l + r) / 2 ;
+
+
+        for(int i = 1 ; i <= n ; i ++)sz[i] = 1 , dsu[i] = i ;
+
+
+        for(int i = 0 ; i < md ; i ++)
+            connect(edges[i].from , edges[i].to);
+
+        if(ok())r = md ;
+        else l = md + 1 ;
+
+
+
+
+    }
+
+    cout << edges[l - 1].cst ;
+
+}
