@@ -1,0 +1,120 @@
+#include<bits/stdc++.h>
+/*
+Created By Tornado2004
+*/
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("haircut.in","r",stdin );
+#define outF freopen("haircut.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+
+#define ll long long
+//#define int ll
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+const int N = 1e3 + 3 , K = 11 , M = N * 4 ;
+const ll MOD = 998244353 , oo = 1e9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+//37
+// (a ^ b / c ) % mod = (a ^ b ) % MOD * (c ^ (mod - 2)) % mod
+// m is prime --> (a ^ m) % m = a % m
+
+
+struct BIT{
+
+
+    vector<ll> v ;
+    int sz ;
+
+    explicit BIT(int n){
+
+        sz = n ;
+
+        v.resize(n);
+
+    }
+
+    void update(int i , ll val){
+        for(i ++ ; i <= sz ; i += (i & -i))
+            v[i - 1] += val ;
+
+
+
+    }
+
+
+    ll get(int i){
+
+        ll ret = 0 ;
+
+        for(i ++ ; i > 0 ; i -= (i & -i))
+            ret += v[i - 1];
+
+        return ret ;
+
+    }
+
+    ll query(int a , int b){
+
+        return get(b) - get(a - 1);
+
+    }
+
+};
+
+
+int32_t main()
+{   //inF;
+   inF;outF;
+    fastio;
+
+    int n ;
+    cin >> n ;
+
+    BIT bit(n) , bit2(n + 1);
+
+
+
+    vector<pair<int , int > > v ;
+
+    for(int i = 0 ; i < n; i ++){
+
+        int a ;
+        cin >> a;
+        if(a == n)a = n - 1 ;
+
+        v.push_back({a , i});
+
+        bit.update(i , bit2.query(a + 1 , n));
+
+        bit2.update(a , 1);
+
+    }
+    deque<ll> ans ;
+
+    sort(v.rbegin() , v.rend()) ;
+    int p = 0 ;
+    for(int i = n - 1 ; i >= 0 ; i --){
+
+        while(p < n && v[p].first == i)bit.update(v[p].second , -bit.query(v[p].second , v[p].second)) , p ++ ;
+
+        ans.push_front(bit.query(0 , n - 1));
+
+
+    }
+    for(auto f : ans)cout << f << '\n';
+
+
+
+}
