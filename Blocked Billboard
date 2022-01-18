@@ -1,0 +1,84 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define inF freopen("billboard.in" , "r" , stdin);
+#define outF freopen("billboard.out" , "w" , stdout);
+#define imod(a , n) (a % n + n ) % n
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+#define ll long long
+#define int ll
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+const int N = 2e5 + 1 ,  M = N * 4 , MX = 2e4 + 40;
+const ll MOD = 1e9 + 7  , oo = 1e9 + 9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+int di[] = {1 , -1 , 0 , 0};
+int dj[] = {0 , 0 , -1 , 1};
+
+
+bool in(int i , int j , int x, int y , int w, int z){
+
+
+
+    if(y < z){
+
+        return i >= x && i <= w && j >= y && j <= z;
+
+    }
+    else {
+
+
+        return i >= x && i <= w && j >= z && j <= y;
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+int32_t main()
+{   //inF;
+    inF;outF;
+    fastio;
+
+
+    int ans = 0 ;
+
+    int x , y , x0 , y0 , x1 , y1 , x10 , y10 , a , b , c , d;
+
+    cin >> x>> y >> x0 >> y0 >> x1 >> y1 >> x10 >> y10 >> a >> b >> c >> d ;
+
+
+
+
+    for(int i = -1000 ; i <= 1000 ; i++)
+    {
+
+        for(int j = -1000 ; j <= 1000 ; j ++){
+
+            if((in(i , j , x , y , x0 , y0) && in(i - 1 , j + 1 , x , y , x0 , y0)  || in(i , j , x1 , y1 , x10 , y10) && in(i - 1 , j + 1 , x1 , y1 , x10 , y10) ) && !(in(i , j , a , b , c, d ) && in(i - 1 , j + 1 , a , b , c, d)))
+               ans ++ ;//cout << i << " " << j << endl;
+        }
+
+
+    }
+
+
+    cout << ans;
+}
