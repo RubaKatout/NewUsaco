@@ -1,0 +1,141 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define inF freopen("mincross.in" , "r" , stdin);
+#define outF freopen("mincross.out" , "w" , stdout);
+#define imod(a , n) (a % n + n ) % n
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+#define ll long long
+
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+
+//#define int ll
+
+const int N =  1e5 + 3 ,  M = N * 4  , MX = 2e4 + 40;
+const ll MOD = 1e9 + 7 , oo = 1e9 + 9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+int di[] = {1 , -1 , 0 , 0};
+int dj[] = {0 , 0 , 1 , -1};
+
+struct BIT{
+
+    vector<int> v ;
+    int sz;
+    explicit BIT(int n){
+        sz = n ;
+
+        v.resize(n);
+    }
+
+    void update(int i , int val){
+
+        for(i ++ ; i <= sz ; i += (i & -i)){
+
+
+            v[i - 1] += val ;
+        }
+    }
+
+    ll get(int i){
+
+        ll ret = 0 ;
+
+        for(i ++ ; i ; i -= (i & -i))
+            ret += v[i - 1];
+
+
+        return ret ;
+
+
+    }
+
+
+
+
+};
+
+
+ll solve(ll inv, int a[] ,   int pos[] , int n){
+
+    ll mn = inv;
+
+
+
+    for(int i = 0 ; i < n ; i ++){
+
+       inv += n - pos[a[i]] - 1;
+
+       inv -= pos[a[i]];
+       mn = min(mn , inv);
+    }
+    return mn ;
+
+
+
+}
+
+
+
+int32_t main()
+{
+    // inF;
+  // inF;outF;
+    fastio;
+
+
+
+
+
+
+    int n ;
+    cin >> n ;
+
+
+    int a[n] , b[n] , pos[n + 1] , posb[n + 1] ;
+
+
+    for(int i = 0 ; i < n ; i ++){
+
+        cin >> a[i];
+        pos[a[i]] = i ;
+
+    }
+    for(int i = 0 ; i < n ; i ++){
+        cin >> b[i];
+        posb[b[i]] = i ;
+    }
+
+
+    ll ans = 0 ;
+
+
+    BIT bit(n);
+
+
+
+    for(int i = n - 1 ; i >= 0 ; i --){
+
+        ans += bit.get(pos[b[i]]);
+
+        bit.update(pos[b[i]] , 1);
+
+    }
+
+
+
+
+    cout << min(solve(ans,a , posb , n) , solve(ans, b ,pos , n )) ;
+
+
+}
