@@ -1,0 +1,108 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define inF freopen("fortmoo.in" , "r" , stdin);
+#define outF freopen("fortmoo.out" , "w" , stdout);
+#define imod(a , n) (a % n + n ) % n
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+#define ll long long
+
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+
+//#define int ll
+
+const int N =  2e5 + 5 + 3 ,  M = N * 4  , MX = 2e4 + 40;
+const ll MOD = 998244353 , oo = 1e9 + 9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+int di[] = {1 , -1 , 0 , 0};
+int dj[] = {0 , 0 , 1 , -1};
+
+
+
+int vis[202][202][202];
+
+int32_t main()
+{
+    // inF;
+    inF;outF;
+    fastio;
+
+    int n , m;
+    cin >> n >> m;
+
+    char arr[n + 1][m + 1];
+
+    for(int i = 1 ;i <= n; i ++)
+        for(int j = 1 ; j <= m ; j ++)cin >> arr[i][j];
+    int mx = 0 ;
+
+
+    int cum[n + 1][m + 1] = {};
+
+
+    for(int c = 1 ; c <= m ; c ++){
+
+        int sum = 0 ;
+
+        for(int r = 1 ; r <= n ; r ++){
+            sum += (arr[r][c] == 'X');
+            cum[r][c] = sum ;
+        }
+
+
+    }
+
+
+
+    for(int c = 1 ; c <= m ; c ++){
+
+        for(int r = 1 ; r <= n ; r ++){
+           // if(r != 1 || c != 2)continue ;
+            for(int l = 1 ; l + r - 1 <= n ; l ++){
+                //if(l != 4)continue ;
+                if(vis[r][c][l])continue ;
+
+                int sum = cum[r + l - 1][c] - cum[r - 1][c];
+
+                if(sum )break;
+
+                vis[r][c][l] ++ ;
+                mx = max(mx , l);
+                for(int i = 1 ; i + c <= m ; i ++){
+
+                   // debug(i)
+                    if(arr[r][c + i] == 'X' || arr[r + l - 1][c + i] == 'X')break;
+                    vis[r][c + i][l] ++ ;
+                    sum = cum[r + l - 1][c + i] - cum[r - 1][c + i];
+                 //   debug(sum)
+                    if(sum)continue ;
+
+                    else mx = max(mx , l * (i + 1));
+
+                }
+            }
+
+        }
+
+
+
+
+
+    }
+
+
+
+    cout << mx ;
+
+}
