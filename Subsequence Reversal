@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define inF freopen("subrev.in" , "r" , stdin);
+#define outF freopen("subrev.out" , "w" , stdout);
+#define imod(a , n) (a % n + n ) % n
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+#define ll long long
+
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+
+//#define int ll
+
+const int N =  51 ,  M = N * 4  , MX = 2e4 + 40;
+const ll MOD = 1e9 + 7 , oo = 1e9 + 9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+int di[] = {1 , -1 , 0 , 0};
+int dj[] = {0 , 0 , 1 , -1};
+int dp[N][N][N][N];
+int n;
+int arr[N];
+
+
+int calc(int l , int r , int lp , int ls){
+
+    if(l > r)return 0;
+
+
+    int &ret = dp[l][r][lp][ls];
+    if(~ret)
+        return ret ;
+
+
+
+    ret = calc(l + 1 , r , lp , ls);
+    ret = max(ret , calc(l , r - 1 , lp , ls));
+
+    if(l != r && arr[r] >= lp && arr[l] <= ls && arr[l] >= arr[r] )
+        ret = max(ret , calc(l + 1 , r - 1 , arr[r] , arr[l]) + 2);
+
+    if(arr[l] >= lp && arr[l] <= ls)ret = max(ret , 1 + calc(l + 1 , r , arr[l] , ls));
+
+    if(arr[r] <= ls && arr[r] >= lp)ret = max(ret , 1 + calc(l , r - 1 , lp , arr[r]));
+
+    if(l != r && arr[l] >= lp && arr[l] <= ls)ret = max(ret , 1 + calc(l + 1 , r - 1 , lp , arr[l]));
+    if(l != r && arr[r] >= lp && arr[r] <= ls)ret = max(ret , 1 + calc(l + 1 , r - 1 , arr[r] , ls));
+    return ret ;
+
+
+}
+
+int32_t main()
+{
+    // inF;
+    inF;outF;
+    fastio;
+
+
+    cin >> n ;
+
+    for(int i = 0 ; i < n ;i ++)cin >> arr[i];
+
+    memset(dp , -1 , sizeof dp);
+
+
+    cout << calc(0 , n - 1 , 0 , 50);
+
+}
