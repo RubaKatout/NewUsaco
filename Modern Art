@@ -1,0 +1,103 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define inF freopen("art.in" , "r" , stdin);
+#define outF freopen("art.out" , "w" , stdout);
+#define imod(a , n) (a % n + n ) % n
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+#define ll long long
+
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+
+//#define int ll
+
+const int N =  51 ,  M = N * 4  , MX = 2e4 + 40;
+const ll MOD = 1e9 + 7 , oo = 1e9 + 9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+int di[] = {1 , -1 , 0 , 0};
+int dj[] = {0 , 0 , 1 , -1};
+int n;
+
+int arr[1003][1003];
+
+
+
+
+int32_t main()
+{
+    // inF;
+  inF;outF;
+    fastio;
+
+    int n ;
+    cin >> n ;
+
+
+    for(int i = 0 ; i < n ; i ++)
+        for(int j = 0  ;j < n ; j ++)
+            cin >> arr[i][j];
+
+
+    int str[n * n + 1] , stc[n * n + 1] , enr[n * n  + 1] , enc[n * n+ 1] ;
+    memset(str , '?' , sizeof str);
+    memset(stc , '?' , sizeof stc);
+    memset(enr , -1 , sizeof enr);
+    memset(enc , -1 , sizeof enc);
+
+    int mp[n * n + 1] = {};
+
+
+    for(int i = 0 ; i < n ; i ++){
+        for(int j = 0 ; j < n ; j ++){
+            if(arr[i][j])mp[arr[i][j]] ++ ;
+
+            str[arr[i][j]] = min(i , str[arr[i][j]]) , stc[arr[i][j]] = min(j , stc[arr[i][j]]) ;
+
+            //debug(str[arr[i][j]])
+            enr[arr[i][j]] = max(enr[arr[i][j]] , i) ;
+            enc[arr[i][j]] = max(enc[arr[i][j]] , j);
+
+        }
+    }
+
+    int ans = n * n ;
+
+    int no[n * n + 1] = {} ;
+
+
+
+    for(int i = 1 ; i <= n * n ; i ++){
+        if(enr[i] == -1)continue ;
+
+        for(int r = str[i] ; r <= enr[i] ; r ++){
+            for(int c = stc[i] ; c <= enc[i] ; c ++){
+             if(arr[r][c] != i)no[arr[r][c]] ++ ;
+            }
+        }
+
+    }
+
+    int nsz = 0 , msz = 0 ;
+
+
+    for(int i = 1 ; i <= n *  n ; i ++)nsz += !!no[i];
+    for(int i = 1 ; i <= n * n ; i ++)msz += !!mp[i];
+    ans -= nsz;
+
+
+  //  debug(msz)
+   if(msz == 1)ans = min(ans , ans - 1) ;
+   cout << ans ;
+
+}
