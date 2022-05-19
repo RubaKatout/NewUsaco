@@ -1,0 +1,95 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define inF freopen("cardgame.in" , "r" , stdin);
+#define outF freopen("cardgame.out" , "w" , stdout);
+#define imod(a , n) (a % n + n ) % n
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v)for(auto &it : v)cin >> it ;
+#define ll long long
+
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+
+//#define int ll
+
+const int N =  5e3 + 3 ,  M = N * 4  , MX = 2e4 + 40;
+const ll MOD = 998244353  , oo = 1e9 + 9 , OO = 1e18 , mod = MOD ;
+const double pi = acos(-1) , eps = 1e-17 ;
+
+int di[] = {1 , -1 , 0 , 0};
+int dj[] = {0 , 0 , 1 , -1};
+
+
+int32_t main()
+{
+    // inF;
+    inF;outF;
+    fastio;
+
+
+
+    int n ;
+    cin >> n ;
+
+    int taken[n * 2 + 1] = {};
+
+    set<int> st ;
+    vector<int> v(n);
+    for(int i = 0 ; i < n ; i ++){
+        cin >> v[i];
+
+        taken[v[i]] = 1 ;
+
+
+    }
+
+    for(int i = 1 ; i <= n * 2 ; i ++){
+        if(taken[i] == 0)st.insert(i);
+
+    }
+
+    int cum1[n] = {} , cum2[n] = {};
+
+    for(int i = 0 ; i < n ; i ++){
+
+        auto it = st.lower_bound(v[i]);
+        if(it != st.end())cum1[i] ++ , st.erase(it);
+
+        if(i)cum1[i] += cum1[i - 1];
+
+    }
+    st.clear();
+    for(int i = 1 ; i <= n * 2 ; i ++){
+        if(taken[i] == 0)st.insert(i);
+
+    }
+    for(int i = n - 1 ; i >= 0 ; i --){
+
+        auto it = st.lower_bound(v[i]);
+        if(it != st.begin()){
+            it -- ;
+            st.erase(it);
+            cum2[i] ++ ;
+        }
+        if(i + 1 < n)cum2[i] += cum2[i + 1];
+
+    }
+
+
+    int mx = max(cum1[n - 1] , cum2[0]);
+
+    for(int i = 1 ; i < n ; i ++){
+        mx = max(mx , cum1[i - 1] + cum2[i]);
+    }
+    cout << mx ;
+
+}
