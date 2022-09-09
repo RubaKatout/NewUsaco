@@ -1,0 +1,98 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+
+#define ll long long
+
+struct data{
+    int a[5] = {};
+
+
+    bool operator < (const data & other)const {
+
+        for(int i = 0 ; i < 5 ; i ++){
+            if(a[i] < other.a[i])return true ;
+            else if(a[i] > other.a[i])return false ;
+
+        }
+        return false ;
+
+
+    }
+
+};
+//#define int ll
+int32_t main()
+{
+
+
+ freopen("cowpatibility.in" , "r" , stdin );
+ freopen("cowpatibility.out" , "w" , stdout);
+   ios_base::sync_with_stdio(false);cin.tie(0);
+    int n ;
+    cin >> n ;
+
+    ll nn = n;
+
+    map<data, ll> mp ;
+
+    ll ans = 0 ;
+
+
+    int arr[5];
+
+    while(n--){
+        for(int i = 0 ; i < 5 ; i ++)cin >> arr[i];
+
+        sort(arr , arr + 5);
+        for(int mask = 1 ; mask < (1 << 5) ; mask ++ ){
+
+            int cnt = 0 ;
+            int idx = 0 ;
+            data tmp ;
+
+
+            for(int j = 0 ; j < 5 ; j ++){
+                if((1 << j) & mask)cnt ++ , tmp.a[idx++] = arr[j];
+
+
+
+            }
+
+
+
+
+            mp[tmp] ++ ;
+
+
+
+
+
+
+        }
+
+
+
+       // cout << "ans " << ans << endl ;
+
+    }
+
+    for(auto &f : mp){
+            int sz = 0 ;
+          //  for(int i = 0 ; i < 5 ; i ++)cout << f.first.a[i] << " " ;
+            for(int i = 0 ; i < 5 ; i ++)sz += !!(f.first.a[i]);
+
+          //  cout << f.second << endl ;
+            ans += (sz % 2 ? 1 : -1) * (f.second) * (f.second - 1) / 2 ;
+
+          //  cout << "ans " << ans << endl ;
+        }
+
+    cout << nn * (nn - 1) / 2 - ans ;
+
+
+
+
+
+}
