@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define debug(x) cout << '[' << #x << " is: " << x << "] " << endl;
+#define imod(a , n) (a % n + n ) % n
+
+#define fastio ios_base::sync_with_stdio(false);cin.tie(0);
+#define inF freopen("ladder.in","r",stdin );
+#define outF freopen("ladder.out" , "w" , stdout ) ;
+#define sor(v) sort(v.begin() , v.end());
+#define print(v) for(auto f : v ) cout << f << " " ;
+#define rsor(v) sort(v.rbegin() , v.rend());
+#define rev(v) reverse(v.begin() , v.end());
+#define scan(v) for(auto &it : v)cin >> it ;
+
+#define logar(x , y) log(x) / log(y)
+#define __sum(n) n * (n + 1) / 2
+#define __lcm(a , b) a / __gcd(a , b) * b
+#define pii pair<int , int >
+#define ll long long
+#define int ll
+#define matrix vector<vector<ll>>
+const int N = 3e5 + 1 , M = 4 * N ;
+
+const int mod = 998244353;
+
+int32_t main()
+
+{   //inF;
+    //inF;outF;
+    fastio;
+
+    freopen("maxcross.in" , "r" , stdin);
+    freopen("maxcross.out" , "w" , stdout);
+
+    int n , k, b ;
+    cin >> n >> k >> b ;
+
+    int mn = 1e9 ;
+
+
+    int arr[n + 1] = {};
+
+    for(int i = 0 ; i < b; i ++){
+        int a ;
+        cin >> a ;
+
+        arr[a] ++ ;
+
+    }
+
+    for(int i = 1 ; i <= n ; i ++)arr[i] += arr[i - 1];
+
+
+
+    for(int i = k ; i <= n; i ++)mn = min(mn , arr[i] - arr[i - k]);
+
+    cout << mn ;
+
+}
